@@ -1,0 +1,30 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+    <div class="page" id="div1">
+    <br><br>
+        <form method = "POST">
+            {% csrf_token %}
+                <div class="form">
+                    <h1 style='font-size: 35px;'>Edit User</h1><br><br>
+                    <div>
+                        <input value = "{{ obj.username }}" id="name" type="text" placeholder="Username" name="username" style="width: 70%;" required/>
+                    </div>
+                    <div>
+                        <input value = "{{ obj.email }}" type="email" placeholder="Email" name="email" style="width: 70%;" required/>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Address"  name="address" value = "{{ obj.address }}" style="width: 70%;" required/>
+                    </div>
+                    <div>
+                        <button id="btn" type="submit">Submit</button>
+                        <a id="btncancel" href="{% url 'details' %}" >Cancel</a>
+                    </div>
+                   
+                </div>
+                
+            
+            </form>
+    </div>
+
+{% endblock %}
