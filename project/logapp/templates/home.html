@@ -1,0 +1,182 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="{% static 'css/reset.css' %}"> <!-- CSS reset -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Resource style -->
+	<link rel="stylesheet" href="{% static 'css/demo.css' %}"> <!-- Demo style -->
+  	
+	<title>Django Project | Mansi</title>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+	<header class="cd-main-header">
+		<div class="cd-main-header__logo"><a href="{% url 'home' %}"><img src="{% static 'img/cd-logo.svg' %}" alt="Logo"></a></div>
+
+		<nav class="cd-main-nav js-main-nav">
+			<ul class="cd-main-nav__list js-signin-modal-trigger">
+				<!-- insert more links here -->
+                {% if user.is_authenticated %}
+                    <li> <a href="{% url 'logout' %}"> SignOut </a></li>
+                    {% else %}
+				    <li><a class="cd-main-nav__item cd-main-nav__item--signin" href="javascript:void(0);" class="user" id="myBtnLogin" onclick="modallogin()" data-signin="login">SignIn</a></li>
+                {% endif %}
+            </ul>
+		</nav>
+	</header>
+
+	<div id="myModalLogin" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="closelogin">&times;</span>
+                <h1 class="modal-title" id="ModalLabel">Login</h1>
+            </div>
+            <div class="modal-body">
+                <form method = "POST" action = "{% url 'login' %}">
+                {% csrf_token %}
+                    <div class="form"><img src="https://image.flaticon.com/icons/png/512/1946/1946429.png" />
+                        <input type="email" name="email" placeholder="Email" class="inputBtn" required/>
+                        <input type="password" name="password" placeholder="Password" class="inputBtn" required/>
+                        <input type="checkbox" checked="checked" name="remember" id="chk"> <span>Remember Me</span>
+                        <button id="signbtn" type="submit">Sign In</button>
+                        <a href="">Forgot Password?</a>
+                        <a href="#" id="myBtnRegister" onclick="modalregister()">Create New Account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="myModalRegister" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="closeregister">&times;</span>
+                <h1 class="modal-title" id="ModalLabel">Register</h1>
+            </div>
+            <div class="modal-body">
+                <form  method = "POST" action = "{% url 'register' %}">
+                {% csrf_token %}
+                    <div class="form-register">
+                        <div>
+                            <input type="text" placeholder="Username" name="username" required/>
+                        </div>
+                        <div>
+                            <input id="no" type="email" placeholder="Email" name="email" required/> 
+                            <input id="dob" style="float: right;" type="text" placeholder="Address" name="address" required/>
+                        </div>
+                        <div>
+                            <input type="password" placeholder="Password" name="password" required/>
+                        </div>
+                        <div>
+                            <input type="password" placeholder="Confirm Password" name="cpassword" required/>
+                        </div>
+                        <div>
+                            <div class="modal-footer">
+                                <button id="btn" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).on('click', '.search', function() {
+            $('.search-bar').addClass('search-bar-active')
+        });
+
+        $(document).on('click', '.search-cancel', function() {
+            $('.search-bar').removeClass('search-bar-active')
+        });
+
+        function modallogin() {
+            var modal = document.getElementById("myModalLogin");
+            var btn = document.getElementById("myBtnLogin");
+            var span = document.getElementsByClassName("closelogin")[0];
+            modal.style.display = "block";
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+        }
+
+        function modalregister() {
+            var modal = document.getElementById("myModalRegister");
+            var btn = document.getElementById("myBtnRegister");
+            var span = document.getElementsByClassName("closeregister")[0];
+            modal.style.display = "block";
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            $('#myModalLogin').hide();
+            $('#myModalRegister').show();
+        }
+
+
+        $(document).ready(function() {
+            $('#adaptive').lightSlider({
+                adaptiveHeight: true,
+                auto: true,
+                item: 1,
+                slideMargin: 0,
+                loop: true,
+                pager: false,
+            });
+        });
+
+        $(document).ready(function() {
+            $('#autoWidth').lightSlider({
+                autoWidth: true,
+                loop: true,
+                item: 4,
+                auto: true,
+                pager: false,
+                onSliderLoad: function() {
+                    $('#autoWidth').removeClass('cS-hidden');
+                }
+            });
+        });
+        $(document).ready(function() {
+            $('#brandWidth').lightSlider({
+                loop: true,
+                auto: true,
+                item: 5,
+                pager: false,
+                onSliderLoad: function() {
+                    $('#brandWidth').removeClass('cS-hidden');
+                }
+            });
+        });
+        $(window).scroll(function() {
+            if ($(document).scrollTop() > 50) {
+                $('.wrapper').addClass('fix-nav');
+            } else {
+                $('.wrapper').removeClass('fix-nav');
+            }
+        });
+        $(document).ready(function() {
+            $('.toggle').click(function() {
+                $('.toggle').toggleClass('active');
+                $('.navigation').toggleClass('active');
+            })
+        });
+
+
+    
+        
+        
+    </script>
+    
+{% block content %}
+        {% endblock %}
+        {% block footer_scripts %}{% endblock %}
+</body>
+</html>
